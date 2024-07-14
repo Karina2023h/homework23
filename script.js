@@ -10,8 +10,8 @@ app.use(bodyParser.json());
 
 mongoose
   .connect("mongodb://localhost:27017/todo")
-  .then(() => console.log("MongoDB connected..."))
-  .catch((err) => console.error("MongoDB connection error:", err));
+  .then(() => console.log("MongoDB підключено..."))
+  .catch((err) => console.error("Помилка підключення MongoDB:", err));
 
 const Todo = mongoose.model(
   "Todo",
@@ -32,8 +32,8 @@ app.get("/todos", async (req, res) => {
     const todos = await Todo.find();
     res.send(todos);
   } catch (err) {
-    console.error("Failed to fetch todos:", err);
-    res.status(500).send("Failed to fetch todos");
+    console.error("Не вдалося отримати завдання:", err);
+    res.status(500).send("Не вдалося отримати завдання");
   }
 });
 
@@ -46,19 +46,19 @@ app.post("/todos", async (req, res) => {
     await todo.save();
     res.send(todo);
   } catch (err) {
-    console.error("Failed to create todo:", err);
-    res.status(500).send("Failed to create todo");
+    console.error("Не вдалося створити завдання:", err);
+    res.status(500).send("Не вдалося створити завдання");
   }
 });
 
 app.get("/todos/:id", async (req, res) => {
   try {
     const todo = await Todo.findById(req.params.id);
-    if (!todo) return res.status(404).send("Todo not found");
+    if (!todo) return res.status(404).send("Todo не знайдено");
     res.send(todo);
   } catch (err) {
-    console.error("Failed to fetch todo:", err);
-    res.status(500).send("Failed to fetch todo");
+    console.error("Не вдалося отримати завдання:", err);
+    res.status(500).send("Не вдалося отримати завдання");
   }
 });
 
@@ -72,33 +72,33 @@ app.put("/todos/:id", async (req, res) => {
       },
       { new: true }
     );
-    if (!todo) return res.status(404).send("Todo not found");
+    if (!todo) return res.status(404).send("Todo не знайдено");
     res.send(todo);
   } catch (err) {
-    console.error("Failed to update todo:", err);
-    res.status(500).send("Failed to update todo");
+    console.error("Не вдалося оновити завдання:", err);
+    res.status(500).send("Не вдалося оновити завдання");
   }
 });
 
 app.delete("/todos/:id", async (req, res) => {
   try {
     const todoId = req.params.id;
-    console.log(`Attempting to delete todo with id: ${todoId}`);
+    console.log(`Спроба видалити завдання з id: ${todoId}`);
 
     const todo = await Todo.findByIdAndDelete(todoId);
 
     if (!todo) {
-      console.error(`Todo with id ${todoId} not found`);
-      return res.status(404).send("Todo not found");
+      console.error(`Завдання з ідентифікатором ${todoId} не знайдено`);
+      return res.status(404).send("Todo не знайдено");
     }
 
-    console.log(`Todo with id ${todoId} successfully deleted`);
+    console.log(`Завдання з ідентифікатором ${todoId} успішно видалено`);
     res.send(todo);
   } catch (err) {
-    console.error("Failed to delete todo:", err);
-    res.status(500).send("Failed to delete todo");
+    console.error("Не вдалося видалити завдання:", err);
+    res.status(500).send("Не вдалося видалити завдання");
   }
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Server running on port ${port}`));
+app.listen(port, () => console.log(`Сервер працює на порту ${port}`));

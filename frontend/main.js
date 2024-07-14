@@ -32,7 +32,7 @@ $(document).ready(function () {
         $(".js--form__input").val("");
       },
       error: function () {
-        console.error("Failed to add todo");
+        console.error("Не вдалося додати завдання");
       },
     });
   }
@@ -78,10 +78,10 @@ $(document).ready(function () {
       contentType: "application/json",
       data: JSON.stringify(todo),
       success: function () {
-        console.log("Todo updated");
+        console.log("Todo оновлено");
       },
       error: function () {
-        console.error("Failed to update todo");
+        console.error("Не вдалося оновити завдання");
       },
     });
   }
@@ -91,10 +91,10 @@ $(document).ready(function () {
       url: `${apiUrl}/${id}`,
       type: "DELETE",
       success: function () {
-        console.log("Todo deleted");
+        console.log("Todo видалено");
       },
       error: function () {
-        console.error("Failed to delete todo");
+        console.error("Не вдалося видалити завдання");
       },
     });
   }
