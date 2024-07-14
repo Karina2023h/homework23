@@ -9,10 +9,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 mongoose
-  .connect("mongodb://localhost:27017/todo", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect("mongodb://localhost:27017/todo")
   .then(() => console.log("MongoDB connected..."))
   .catch((err) => console.error("MongoDB connection error:", err));
 
@@ -67,8 +64,8 @@ app.get("/todos/:id", async (req, res) => {
 
 app.put("/todos/:id", async (req, res) => {
   try {
-    const todo = await Todo.findOneAndUpdate(
-      { _id: req.params.id },
+    const todo = await Todo.findByIdAndUpdate(
+      req.params.id,
       {
         text: req.body.text,
         completed: req.body.completed,
@@ -85,8 +82,17 @@ app.put("/todos/:id", async (req, res) => {
 
 app.delete("/todos/:id", async (req, res) => {
   try {
-    const todo = await Todo.findOneAndDelete({ _id: req.params.id });
-    if (!todo) return res.status(404).send("Todo not found");
+    const todoId = req.params.id;
+    console.log(`Attempting to delete todo with id: ${todoId}`);
+
+    const todo = await Todo.findByIdAndDelete(todoId);
+
+    if (!todo) {
+      console.error(`Todo with id ${todoId} not found`);
+      return res.status(404).send("Todo not found");
+    }
+
+    console.log(`Todo with id ${todoId} successfully deleted`);
     res.send(todo);
   } catch (err) {
     console.error("Failed to delete todo:", err);
