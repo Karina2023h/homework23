@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToDo List</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>ToDoList</h1>
+    <form class="form js--form">
+      <input type="text" name="value" required class="form__input js--form__input">
+      <button type="submit" class="form__btn btn btn-primary">Додати</button>
+    </form>
+    <ul class="js--todos-wrapper">
+      <li class="todo-item">
+        <input type="checkbox">
+        <span class="todo-item__description">Текст</span>
+        <button class="todo-item__delete btn btn-danger">Видалити</button>
+      </li>
+      <li class="todo-item todo-item--checked">
+        <input type="checkbox">
+        <span class="todo-item__description">Текст</span>
+        <button class="todo-item__delete btn btn-danger">Видалити</button>
+      </li>
+    </ul>
+  </div>
+  <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="taskModalLabel">Ваше завдання</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="taskText">Текст завдання</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="main.js"></script>
+</body>
+
+</html>
