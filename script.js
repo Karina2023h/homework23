@@ -30,6 +30,7 @@ const Todo = mongoose.model(
 app.get("/todos", async (req, res) => {
   try {
     const todos = await Todo.find();
+    console.log("Завдання отримані:", todos);
     res.send(todos);
   } catch (err) {
     console.error("Не вдалося отримати завдання:", err);
@@ -38,12 +39,14 @@ app.get("/todos", async (req, res) => {
 });
 
 app.post("/todos", async (req, res) => {
+  console.log("Створення нового завдання:", req.body);
   try {
     const todo = new Todo({
       text: req.body.text,
       completed: req.body.completed || false,
     });
     await todo.save();
+    console.log("Завдання створено:", todo);
     res.send(todo);
   } catch (err) {
     console.error("Не вдалося створити завдання:", err);
@@ -52,9 +55,15 @@ app.post("/todos", async (req, res) => {
 });
 
 app.get("/todos/:id", async (req, res) => {
+  const todoId = req.params.id;
+  console.log(`Отримання завдання з ID: ${todoId}`);
   try {
-    const todo = await Todo.findById(req.params.id);
-    if (!todo) return res.status(404).send("Todo не знайдено");
+    const todo = await Todo.findById(todoId);
+    if (!todo) {
+      console.error(`Завдання з ID ${todoId} не знайдено`);
+      return res.status(404).send("Todo не знайдено");
+    }
+    console.log("Завдання отримано:", todo);
     res.send(todo);
   } catch (err) {
     console.error("Не вдалося отримати завдання:", err);
@@ -63,16 +72,22 @@ app.get("/todos/:id", async (req, res) => {
 });
 
 app.put("/todos/:id", async (req, res) => {
+  const todoId = req.params.id;
+  console.log(`Оновлення завдання з ID: ${todoId}`);
   try {
     const todo = await Todo.findByIdAndUpdate(
-      req.params.id,
+      todoId,
       {
         text: req.body.text,
         completed: req.body.completed,
       },
       { new: true }
     );
-    if (!todo) return res.status(404).send("Todo не знайдено");
+    if (!todo) {
+      console.error(`Завдання з ID ${todoId} не знайдено`);
+      return res.status(404).send("Todo не знайдено");
+    }
+    console.log("Завдання оновлено:", todo);
     res.send(todo);
   } catch (err) {
     console.error("Не вдалося оновити завдання:", err);

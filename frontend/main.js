@@ -9,7 +9,9 @@ $(document).ready(function () {
   });
 
   function loadTodos() {
+    console.log("Завантаження todo...");
     $.get(apiUrl, function (todos) {
+      console.log("Todo завантажені:", todos);
       todos.forEach((todo) => renderTodo(todo));
     });
   }
@@ -17,17 +19,17 @@ $(document).ready(function () {
   function addTodo() {
     const value = $(".js--form__input").val().trim();
     if (value === "") return;
-
     const newTodo = {
       text: value,
       completed: false,
     };
-
+    console.log("Новий todo створений:", newTodo);
     $.post({
       url: apiUrl,
       contentType: "application/json",
       data: JSON.stringify(newTodo),
       success: function (todo) {
+        console.log("Завдання успішно додано");
         renderTodo(todo);
         $(".js--form__input").val("");
       },
@@ -38,6 +40,7 @@ $(document).ready(function () {
   }
 
   function renderTodo(todo) {
+    console.log("Відображення todo:", todo);
     const li = $("<li></li>")
       .addClass(`todo-item ${todo.completed ? "todo-item--checked" : ""}`)
       .attr("data-id", todo._id);
@@ -47,6 +50,7 @@ $(document).ready(function () {
       .prop("checked", todo.completed)
       .on("change", function () {
         todo.completed = $(this).prop("checked");
+        console.log("Зміна стану todo:", todo);
         updateTodo(todo);
         li.toggleClass("todo-item--checked", todo.completed);
       });
@@ -55,6 +59,7 @@ $(document).ready(function () {
       .addClass("todo-item__description")
       .text(todo.text)
       .on("click", function () {
+        console.log("Клік по todo:", todo.text);
         $("#taskText").text(todo.text);
         $("#taskModal").modal("show");
       });
@@ -63,6 +68,7 @@ $(document).ready(function () {
       .addClass("todo-item__delete btn btn-danger")
       .text("Видалити")
       .on("click", function () {
+        console.log("Видалення todo з ID:", todo._id);
         deleteTodo(todo._id);
         li.remove();
       });
@@ -72,6 +78,7 @@ $(document).ready(function () {
   }
 
   function updateTodo(todo) {
+    console.log("Оновлення todo з ID:", todo._id);
     $.ajax({
       url: `${apiUrl}/${todo._id}`,
       type: "PUT",
@@ -87,6 +94,7 @@ $(document).ready(function () {
   }
 
   function deleteTodo(id) {
+    console.log("Видалення todo з ID:", id);
     $.ajax({
       url: `${apiUrl}/${id}`,
       type: "DELETE",
